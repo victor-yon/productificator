@@ -3,3 +3,4 @@ requests~=2.31
 google-auth~=2.22
 google-auth-oauthlib~=1.0
 google-api-python-client~=2.96
+notion-client~=2.0

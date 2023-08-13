@@ -19,11 +19,12 @@ display in a dashboard.
 
 You need to provide the following environment variables:
 
-- `NOTION_API_KEY`: Your Notion API key.
+- `NOTION_API_TOKEN`: Your Notion API key.
 - `WEATHER_API_KEY`: Your Weather API key.
 - `GOOGLE_CALENDAR_CREDENTIALS`: Your Google Calendar credentials.
 
-You can set these when running the Docker container with the `-e` option, e.g., `-e NOTION_API_KEY=my_notion_api_key`.
+You can set these when running the Docker container with the `-e` option,
+e.g., `-e NOTION_API_TOKEN=my_NOTION_API_TOKEN`.
 
 ## Contributing
 
