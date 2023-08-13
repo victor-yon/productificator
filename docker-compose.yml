@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  productificator-api:
+    container_name: productificator-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      NOTION_API_KEY: ${NOTION_API_KEY}
+      WEATHER_API_KEY: ${WEATHER_API_KEY}
+      GOOGLE_CALENDAR_CREDENTIALS: ${GOOGLE_CALENDAR_CREDENTIALS}

@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Victor Yon">
-    
+
     <!-- Disable indexing -->
     <meta name="robots" content="noindex,nofollow">
     <meta name="googlebot" content="noindex,nofollow">
-    
+
     <title>Productificator</title>
 
     <style>
@@ -24,20 +24,20 @@
       function updateTime()
       {
         var date = new Date();
-	var hours = date.getHours();
-	var min = date.getMinutes();
+        var hours = date.getHours();
+        var min = date.getMinutes();
         var seconds = date.getSeconds();
         var mill = date.getMilliseconds();
 
 	// Add fancy 0
         hours = (hours < 10 ? "0" + hours : hours);
         min = (min < 10 ? "0" + min : min);
-	
 
-	var timeStr = hours + ":" + min;
+
+        var timeStr = hours + ":" + min;
 	document.getElementById("clock").innerText = timeStr;
-	
-	//console.log("Refresh time at: " + hours + ":" + min + ":" + seconds)
+
+        //console.log("Refresh time at: " + hours + ":" + min + ":" + seconds)
 	return 60000 - (seconds * 1000 + mill);
       }
 
@@ -56,8 +56,12 @@
     </script>
 
   </head>
-  <body> 
+  <body>
     <div id="clock"></div>
+    <div id="todos">
+      <h2>To-do List</h2>
+      <!-- To-do items will be populated here -->
+    </div>
   </body>
 </html>
 
