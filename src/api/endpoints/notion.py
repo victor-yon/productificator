@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-from api.services.notion_service import fetch_today_tasks
+from services.notion_service import fetch_today_tasks
 
 notion_blueprint = Blueprint('notion', __name__)
 

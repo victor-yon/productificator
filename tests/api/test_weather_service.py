@@ -1,4 +1,4 @@
-from src.api.services.weather_service import fetch_current_weather
+from services.weather_service import fetch_current_weather
 
 
 def test_fetch_current_weather():

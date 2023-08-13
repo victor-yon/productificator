@@ -1,4 +1,4 @@
-from src.api.services.calendar_service import fetch_events
+from services.calendar_service import fetch_events
 
 
 def test_fetch_events():

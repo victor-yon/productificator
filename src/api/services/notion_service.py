@@ -2,7 +2,7 @@ import dataclasses
 
 from notion_client import Client
 
-from src.api.config import NOTION_API_TOKEN, NOTION_DATABASE_ID
+from config import NOTION_API_TOKEN, NOTION_DATABASE_ID
 
 
 @dataclasses.dataclass(frozen=True)

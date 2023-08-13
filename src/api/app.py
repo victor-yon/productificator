@@ -1,15 +1,15 @@
 from flask import Flask
 
-from src.api.endpoints.calendar import calendar_blueprint
-from src.api.endpoints.notion import notion_blueprint
-from src.api.endpoints.weather import weather_blueprint
+from endpoints.calendar import calendar_blueprint
+from endpoints.notion import notion_blueprint
+from endpoints.weather import weather_blueprint
 
 
 def create_app():
     app = Flask(__name__)
 
     # Load configuration if needed
-    # app.config.from_object('api.config')
+    # app.config.from_object('config')
 
     # Register blueprints for each API section
     app.register_blueprint(notion_blueprint, url_prefix='/notion')

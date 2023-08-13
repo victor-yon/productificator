@@ -1,12 +1,12 @@
 import unittest
 
-from src.api.services.notion_service import fetch_today_tasks, complete_task
+from services.notion_service import fetch_today_tasks, complete_task
 
 
 class MyTestCase(unittest.TestCase):
 
     def test_set_token(self):
-        from src.api.config import NOTION_API_TOKEN
+        from config import NOTION_API_TOKEN
         self.assertIsNotNone(NOTION_API_TOKEN)
         self.assertTrue(len(NOTION_API_TOKEN) > 0)
         self.assertTrue(NOTION_API_TOKEN.startswith('secret_'))
