@@ -40,11 +40,36 @@
               return 60000 - (seconds * 1000 + mill);
           }
 
+          function fetchTodos() {
+            var xhr = new XMLHttpRequest();
+            // xhr.open('GET', 'http://localhost:5000/notion/today_tasks', true);
+            xhr.open('GET', '/productificator_api/notion/today_tasks', true);
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                var todosHTML = '';
+                var doneHTML = '';
+                for (var i = 0; i < data.length; i++) {
+                  if (data[i].is_done) {
+                    doneHTML += '<li>' + data[i].label + '</li>';
+                  } else {
+                    todosHTML += '<li>' + data[i].label + '</li>';
+                  }
+                }
+                document.getElementById('todos').innerHTML = todosHTML;
+                document.getElementById('done').innerHTML = doneHTML;
+              }
+            };
+            xhr.send();
+          }
+
           function initAll() {
               nextUpdate = updateTime();
+            fetchTodos();
               // Repeat update every minute, starting from the next minute
               setTimeout(function () {
-                  updateTime()
+                updateTime();
+                fetchTodos();
                   setInterval(updateTime, 60000);
               }, nextUpdate);
           }
@@ -55,9 +80,14 @@
   </head>
   <body>
   <div id="clock"></div>
-  <div id="todos">
-      <h2>To-do List</h2>
-      <!-- To-do items will be populated here -->
+  <div id="tasks">
+    <h2>To-do List</h2>
+    <ul id="todos">
+      <!-- To-do tasks will be populated here -->
+    </ul>
+    <ul id="done">
+      <!-- Completed tasks be populated here -->
+    </ul>
   </div>
   </body>
 </html>

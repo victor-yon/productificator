@@ -9,7 +9,7 @@ from config import NOTION_API_TOKEN, NOTION_DATABASE_ID
 class Task:
     """ A to-do item from Notion """
     id: str
-    name: str
+    label: str
     is_done: bool
     motivation_cost: int
 
@@ -17,13 +17,13 @@ class Task:
     def load_from_notion(todo_dict: dict):
         return Task(
             id=todo_dict['id'],
-            name=todo_dict['properties']['Name']['title'][0]['plain_text'],
+            label=todo_dict['properties']['Name']['title'][0]['plain_text'],
             is_done=todo_dict['properties']['Status']['select']['name'] in ['Done', 'Wait Validation', 'Canceled'],
             motivation_cost=todo_dict['properties']['Motivation cost']['number']
         )
 
 
-def fetch_today_tasks() -> dict[str, list[Task]]:
+def fetch_today_tasks() -> list[Task]:
     """
     Fetch tasks from a Notion database, and filter them to only return the ones that have to be done today.
     :return: A dict with two keys: 'todo' and 'done'. Each key contains a list of Task objects.
@@ -45,10 +45,8 @@ def fetch_today_tasks() -> dict[str, list[Task]]:
 
     # Convert the list of dicts to a list of task objects
     tasks = [Task.load_from_notion(task) for task in tasks]
-    tasks_todo = [task for task in tasks if not task.is_done]
-    tasks_done = [task for task in tasks if task.is_done]
 
-    return {'todo': tasks_todo, 'done': tasks_done}
+    return tasks
 
 
 def complete_task(task_id: str) -> bool:

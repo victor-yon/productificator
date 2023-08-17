@@ -13,9 +13,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_fetch_today_tasks(self):
         todos = fetch_today_tasks()
-        self.assertIsInstance(todos, dict)
-        self.assertEqual(len(todos), 2)
-        self.assertIsInstance(todos['todo'], list)
+        self.assertIsInstance(todos, list)
 
     def test_complete_todo(self):
         success = complete_task('test_id')
