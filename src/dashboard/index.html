@@ -38,6 +38,39 @@
         #done li:before {
             content: "☒ "; /* Creates a square box with a checkmark */
         }
+
+        /* Badge styling */
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1;
+            color: white;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            background-color: black;
+            border-radius: 8px;
+            margin-left: 10px;
+        }
+
+        /* Motivation progress bar styles */
+        #motivationProgressContainer {
+            width: 100%;
+            background-color: #ddd; /* Light gray background */
+            height: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        #motivationProgressBar {
+            width: 0;
+            height: 100%;
+            background-color: black;
+            border-radius: 10px;
+        }
+
     </style>
 
     <script type="text/javascript">
@@ -92,16 +125,29 @@
         function updateTasks(tasks) {
             var todosHTML = '';
             var doneHTML = '';
+            var totalMotivationCost = 0;
+            var completedMotivationCost = 0;
+
             for (var i = 0; i < tasks.length; i++) {
+                var taskHTML = '<li>' + tasks[i].label + ' <span class="badge">' + tasks[i].motivation_cost +
+                    '</span></li>';
+                totalMotivationCost += tasks[i].motivation_cost;
+
                 if (tasks[i].is_done) {
-                    doneHTML += '<li>' + tasks[i].label + '</li>';
+                    doneHTML += taskHTML;
+                    completedMotivationCost += tasks[i].motivation_cost;
                 } else {
-                    todosHTML += '<li>' + tasks[i].label + '</li>';
+                    todosHTML += taskHTML;
                 }
             }
+
             document.getElementById('todos').innerHTML = todosHTML;
             document.getElementById('done').innerHTML = doneHTML;
+
+            var progressPercentage = (completedMotivationCost / totalMotivationCost) * 100;
+            document.getElementById('motivationProgressBar').style.width = progressPercentage + '%';
         }
+
 
         /**
          * Initialize refresh logic.
@@ -125,7 +171,9 @@
 <body>
 <div id="clock"></div>
 <div id="tasks">
-    <h2>To-do List</h2>
+    <div id="motivationProgressContainer">
+        <div id="motivationProgressBar"></div>
+    </div>
     <ul id="todos">
         <!-- To-do tasks will be populated here -->
     </ul>
