@@ -13,37 +13,68 @@
     <title>Productificator</title>
 
     <style>
+        /* ------------------- Clock styles ------------------- */
         #clock {
             font-family: TimeTraveler, Arial, Helvetica, sans-serif;
             font-size: 95px;
             font-weight: 400;
         }
 
-        #tasks ul {
-            list-style-type: none; /* Removes default bullet points */
-            padding: 0;
+        /* ------------------- Tasks styles ------------------- */
+        div.customCheckbox {
+            font-size: 36px;
         }
 
-        #tasks li {
-            font-size: 18px;
-            padding: 5px 0;
-            position: relative; /* Makes it possible to position the before content */
+        /* Base style for the checkbox */
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 24px;
+            height: 24px;
+            position: relative;
+            cursor: pointer;
         }
 
-        #tasks li:before {
-            content: "☐ "; /* Creates a square box to resemble to-do checkbox */
-            font-weight: bold;
+        /* Unchecked State */
+        input[type="checkbox"]:before {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid black;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        #done li:before {
-            content: "☒ "; /* Creates a square box with a checkmark */
+        /* Checked State */
+        input[type="checkbox"]:checked:before {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: black;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        input[type="checkbox"]:checked:after {
+            content: "✓";
+            color: white;
+            font-size: 26px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         /* Badge styling */
         .badge {
             display: inline-block;
             padding: 2px 6px;
-            font-size: 14px;
+            font-size: 24px;
             font-weight: bold;
             line-height: 1;
             color: white;
@@ -55,7 +86,7 @@
             margin-left: 10px;
         }
 
-        /* Motivation progress bar styles */
+        /* ------------------- Progress bar ------------------- */
         #motivationProgressContainer {
             width: 100%;
             background-color: #ddd; /* Light gray background */
@@ -129,13 +160,17 @@
             var completedMotivationCost = 0;
 
             for (var i = 0; i < tasks.length; i++) {
-                var taskHTML = '<li>' + tasks[i].label + ' <span class="badge">' + tasks[i].motivation_cost +
-                    '</span></li>';
-                totalMotivationCost += tasks[i].motivation_cost;
+                var t = tasks[i];
+                var taskHTML = '<div class="customCheckbox">' +
+                    '<input type="checkbox" id="' + t.id + '" "' + (t.is_done ? 'checked' : '') + '" > ' +
+                    '<label for="' + t.id + '">' + t.label + '</label> ' +
+                    '<span class="badge">' + t.motivation_cost + '</span>' +
+                    '</div>';
+                totalMotivationCost += t.motivation_cost;
 
-                if (tasks[i].is_done) {
+                if (t.is_done) {
                     doneHTML += taskHTML;
-                    completedMotivationCost += tasks[i].motivation_cost;
+                    completedMotivationCost += t.motivation_cost;
                 } else {
                     todosHTML += taskHTML;
                 }
@@ -147,7 +182,6 @@
             var progressPercentage = (completedMotivationCost / totalMotivationCost) * 100;
             document.getElementById('motivationProgressBar').style.width = progressPercentage + '%';
         }
-
 
         /**
          * Initialize refresh logic.
@@ -169,17 +203,36 @@
 
 </head>
 <body>
+
+<!-- Define some SVG images to use later -->
+<svg width="0" height="0" style="position:absolute">
+    <defs>
+        <!-- Unchecked box -->
+        <g id="checkboxUnchecked">
+            <rect x="2" y="2" width="20" height="20" stroke="black" stroke-width="2" fill="white"/>
+        </g>
+
+        <!-- Checked box with a checkmark -->
+        <g id="checkboxChecked">
+            <rect x="2" y="2" width="20" height="20" stroke="black" stroke-width="2" fill="white"/>
+            <path d="M5 12L10 17L19 7" stroke="black" stroke-width="2"/>
+        </g>
+    </defs>
+</svg>
+
+
 <div id="clock"></div>
 <div id="tasks">
     <div id="motivationProgressContainer">
         <div id="motivationProgressBar"></div>
     </div>
-    <ul id="todos">
+
+    <div id="todos">
         <!-- To-do tasks will be populated here -->
-    </ul>
-    <ul id="done">
+    </div>
+    <div id="done">
         <!-- Completed tasks be populated here -->
-    </ul>
+    </div>
 </div>
 </body>
 </html>
