@@ -21,6 +21,11 @@
         }
 
         /* ------------------- Tasks styles ------------------- */
+        #todos, #done {
+            padding-top: 25px;
+            padding-left: 15px;
+        }
+
         div.customCheckbox {
             font-size: 36px;
         }
@@ -40,8 +45,8 @@
         input[type="checkbox"]:before {
             content: "";
             display: block;
-            width: 20px;
-            height: 20px;
+            width: 26px;
+            height: 26px;
             border: 2px solid black;
             position: absolute;
             top: 0;
@@ -52,8 +57,8 @@
         input[type="checkbox"]:checked:before {
             content: "";
             display: block;
-            width: 20px;
-            height: 20px;
+            width: 26px;
+            height: 26px;
             background: black;
             position: absolute;
             top: 0;
@@ -162,7 +167,7 @@
             for (var i = 0; i < tasks.length; i++) {
                 var t = tasks[i];
                 var taskHTML = '<div class="customCheckbox">' +
-                    '<input type="checkbox" id="' + t.id + '" "' + (t.is_done ? 'checked' : '') + '" > ' +
+                    '<input type="checkbox" id="' + t.id + '" ' + (t.is_done ? 'checked' : '') + '> ' +
                     '<label for="' + t.id + '">' + t.label + '</label> ' +
                     '<span class="badge">' + t.motivation_cost + '</span>' +
                     '</div>';
