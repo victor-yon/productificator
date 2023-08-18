@@ -17,13 +17,27 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            font-family: TimeTraveler, Arial, Helvetica, sans-serif;
         }
 
         /* ------------------- Clock styles ------------------- */
         #clock {
-            font-family: TimeTraveler, Arial, Helvetica, sans-serif;
             font-size: 95px;
             font-weight: 400;
+        }
+
+        #clockContainer {
+            display: flex;
+            align-items: center; /* Vertically aligns the contents in the middle */
+        }
+
+        #dateInfo {
+            margin-left: 15px; /* Space between the clock and the date info */
+        }
+
+        #dayOfWeek, #currentDate {
+            font-size: 30px;
+            margin: 5px 0; /* Add some spacing between the day and the date */
         }
 
         /* ------------------- Tasks styles ------------------- */
@@ -189,15 +203,28 @@
          */
         function updateTime() {
             var date = new Date();
+            var day = date.getDate()
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
             var hours = date.getHours();
             var min = date.getMinutes();
             var seconds = date.getSeconds();
             var mill = date.getMilliseconds();
 
+            // Get the day of the week and date
+            var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var dayOfWeek = days[date.getDay()];
+            var formattedDate = (day < 10 ? "0" + day : day) + '/' +
+                ((month + 1) < 10 ? "0" + (month + 1) : (month + 1)) + '/' +
+                year.toString().substr(-2);
+
             // Add fancy 0
             hours = (hours < 10 ? "0" + hours : hours);
             min = (min < 10 ? "0" + min : min);
 
+            // Update the day of the week, the date and the lock
+            document.getElementById("dayOfWeek").innerText = dayOfWeek;
+            document.getElementById("currentDate").innerText = formattedDate;
             document.getElementById("clock").innerText = hours + ":" + min;
 
             //console.log("Refresh time at: " + hours + ":" + min + ":" + seconds)
@@ -290,7 +317,13 @@
 </svg>
 <div class="content-wrap clearfix">
 
-    <div id="clock"></div>
+    <div id="clockContainer">
+        <div id="clock"></div>
+        <div id="dateInfo">
+            <div id="dayOfWeek">Test</div>
+            <div id="currentDate">10/12/1999</div>
+        </div>
+    </div>
 
     <div id="tasks">
         <div id="motivationProgressContainer">
