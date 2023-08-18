@@ -13,6 +13,12 @@
     <title>Productificator</title>
 
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
         /* ------------------- Clock styles ------------------- */
         #clock {
             font-family: TimeTraveler, Arial, Helvetica, sans-serif;
@@ -97,7 +103,8 @@
             background-color: #ddd; /* Light gray background */
             height: 20px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
         }
 
         #motivationProgressBar {
@@ -106,6 +113,64 @@
             background-color: black;
             border-radius: 10px;
         }
+
+        /* ---------------------- Footer ---------------------- */
+        footer {
+            width: 100%;
+            height: 10%;
+            overflow: auto; /* To clear the floats */
+            border-top: 1px solid #ddd;
+        }
+
+        .footer-section {
+            float: left;
+            width: 33.33%;
+            height: 100%;
+            padding: 0 15px;
+            box-sizing: border-box;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+
+        .footer-section:first-child {
+            border-left: none;
+        }
+
+        .footer-section:last-child {
+            border-right: none;
+        }
+
+        footer h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        footer {
+            color: #5e5e5e;
+        }
+
+        /* This helps push the footer to the bottom */
+        .content-wrap {
+            min-height: 100%;
+            /* equal to footer height */
+            margin-bottom: -16%;
+        }
+
+        /* Clear floats */
+        .clearfix:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        #version {
+            position: absolute;
+            bottom: 8px; /* You can adjust this value for vertical spacing */
+            right: 10px; /* Adjust this value for horizontal spacing */
+        }
+
 
     </style>
 
@@ -208,7 +273,6 @@
 
 </head>
 <body>
-
 <!-- Define some SVG images to use later -->
 <svg width="0" height="0" style="position:absolute">
     <defs>
@@ -224,21 +288,35 @@
         </g>
     </defs>
 </svg>
+<div class="content-wrap clearfix">
 
+    <div id="clock"></div>
 
-<div id="clock"></div>
-<div id="tasks">
-    <div id="motivationProgressContainer">
-        <div id="motivationProgressBar"></div>
-    </div>
+    <div id="tasks">
+        <div id="motivationProgressContainer">
+            <div id="motivationProgressBar"></div>
+        </div>
 
-    <div id="todos">
-        <!-- To-do tasks will be populated here -->
-    </div>
-    <div id="done">
-        <!-- Completed tasks be populated here -->
+        <div id="todos">
+            <!-- To-do tasks will be populated here -->
+        </div>
+        <div id="done">
+            <!-- Completed tasks be populated here -->
+        </div>
     </div>
 </div>
+
+<footer>
+    <div class="footer-section">
+        <h2>Tasks</h2>
+    </div>
+    <div class="footer-section">
+        <h2>Coder Stats</h2>
+    </div>
+    <div class="footer-section">
+        <span id="version">v0.1.0</span>
+    </div>
+</footer>
+
 </body>
 </html>
-
