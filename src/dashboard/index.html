@@ -18,6 +18,26 @@
             font-size: 95px;
             font-weight: 400;
         }
+
+        #tasks ul {
+            list-style-type: none; /* Removes default bullet points */
+            padding: 0;
+        }
+
+        #tasks li {
+            font-size: 18px;
+            padding: 5px 0;
+            position: relative; /* Makes it possible to position the before content */
+        }
+
+        #tasks li:before {
+            content: "☐ "; /* Creates a square box to resemble to-do checkbox */
+            font-weight: bold;
+        }
+
+        #done li:before {
+            content: "☒ "; /* Creates a square box with a checkmark */
+        }
     </style>
 
     <script type="text/javascript">
@@ -44,9 +64,7 @@
             hours = (hours < 10 ? "0" + hours : hours);
             min = (min < 10 ? "0" + min : min);
 
-
-            var timeStr = hours + ":" + min;
-            document.getElementById("clock").innerText = timeStr;
+            document.getElementById("clock").innerText = hours + ":" + min;
 
             //console.log("Refresh time at: " + hours + ":" + min + ":" + seconds)
             return 60000 - (seconds * 1000 + mill);
