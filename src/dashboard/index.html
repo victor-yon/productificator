@@ -1,94 +1,120 @@
 <!doctype html>
 <html lang="en" class="h-100">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-      <meta name="author" content="Victor Yon">
+    <meta name="author" content="Victor Yon">
 
-      <!-- Disable indexing -->
-      <meta name="robots" content="noindex,nofollow">
-      <meta name="googlebot" content="noindex,nofollow">
+    <!-- Disable indexing -->
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="googlebot" content="noindex,nofollow">
 
-      <title>Productificator</title>
+    <title>Productificator</title>
 
     <style>
         #clock {
             font-family: TimeTraveler, Arial, Helvetica, sans-serif;
             font-size: 95px;
             font-weight: 400;
-      }
+        }
     </style>
 
-      <script type="text/javascript">
-          function updateTime() {
-              var date = new Date();
-              var hours = date.getHours();
-              var min = date.getMinutes();
-              var seconds = date.getSeconds();
-              var mill = date.getMilliseconds();
+    <script type="text/javascript">
+        /**
+         * Update the time, fetch the data from API and update the page
+         */
+        function updateAll() {
+            updateTime();
+            fetchApi();
+        }
 
-              // Add fancy 0
-              hours = (hours < 10 ? "0" + hours : hours);
-              min = (min < 10 ? "0" + min : min);
+        /**
+         * Update the clock and return the time until the next minute
+         * @returns {number} Time until the next minute in milliseconds
+         */
+        function updateTime() {
+            var date = new Date();
+            var hours = date.getHours();
+            var min = date.getMinutes();
+            var seconds = date.getSeconds();
+            var mill = date.getMilliseconds();
+
+            // Add fancy 0
+            hours = (hours < 10 ? "0" + hours : hours);
+            min = (min < 10 ? "0" + min : min);
 
 
-              var timeStr = hours + ":" + min;
-              document.getElementById("clock").innerText = timeStr;
+            var timeStr = hours + ":" + min;
+            document.getElementById("clock").innerText = timeStr;
 
-              //console.log("Refresh time at: " + hours + ":" + min + ":" + seconds)
-              return 60000 - (seconds * 1000 + mill);
-          }
+            //console.log("Refresh time at: " + hours + ":" + min + ":" + seconds)
+            return 60000 - (seconds * 1000 + mill);
+        }
 
-          function fetchTodos() {
+        /**
+         * Fetch data from the API and update the page
+         */
+        function fetchApi() {
             var xhr = new XMLHttpRequest();
-            // xhr.open('GET', 'http://localhost:5000/notion/today_tasks', true);
             xhr.open('GET', '/productificator_api/notion/today_tasks', true);
             xhr.onreadystatechange = function () {
-              if (xhr.readyState === 4 && xhr.status === 200) {
-                var data = JSON.parse(xhr.responseText);
-                var todosHTML = '';
-                var doneHTML = '';
-                for (var i = 0; i < data.length; i++) {
-                  if (data[i].is_done) {
-                    doneHTML += '<li>' + data[i].label + '</li>';
-                  } else {
-                    todosHTML += '<li>' + data[i].label + '</li>';
-                  }
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    updateTasks(data);
                 }
-                document.getElementById('todos').innerHTML = todosHTML;
-                document.getElementById('done').innerHTML = doneHTML;
-              }
             };
             xhr.send();
-          }
+        }
 
-          function initAll() {
-              nextUpdate = updateTime();
-            fetchTodos();
-              // Repeat update every minute, starting from the next minute
-              setTimeout(function () {
+        /**
+         * Update the tasks on the page
+         * @param tasks Array of tasks
+         */
+        function updateTasks(tasks) {
+            var todosHTML = '';
+            var doneHTML = '';
+            for (var i = 0; i < tasks.length; i++) {
+                if (tasks[i].is_done) {
+                    doneHTML += '<li>' + tasks[i].label + '</li>';
+                } else {
+                    todosHTML += '<li>' + tasks[i].label + '</li>';
+                }
+            }
+            document.getElementById('todos').innerHTML = todosHTML;
+            document.getElementById('done').innerHTML = doneHTML;
+        }
+
+        /**
+         * Initialize refresh logic.
+         * Run an initial update, then schedule a refresh every minute starting from the next minute.
+         */
+        function initAll() {
+            var nextUpdate = updateTime();
+            fetchApi();
+            // Repeat update every minute, starting from the next minute
+            setTimeout(function () {
                 updateTime();
-                fetchTodos();
-                  setInterval(updateTime, 60000);
-              }, nextUpdate);
-          }
+                setInterval(updateAll, 60000);
+            }, nextUpdate);
+        }
 
-          window.onload = initAll;
-      </script>
+        // Start the refresh logic
+        window.onload = initAll;
+    </script>
 
-  </head>
-  <body>
-  <div id="clock"></div>
-  <div id="tasks">
+</head>
+<body>
+<div id="clock"></div>
+<div id="tasks">
     <h2>To-do List</h2>
     <ul id="todos">
-      <!-- To-do tasks will be populated here -->
+        <!-- To-do tasks will be populated here -->
     </ul>
     <ul id="done">
-      <!-- Completed tasks be populated here -->
+        <!-- Completed tasks be populated here -->
     </ul>
-  </div>
-  </body>
+</div>
+</body>
 </html>
 
