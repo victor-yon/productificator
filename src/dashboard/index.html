@@ -151,6 +151,14 @@
             border-right: 1px solid #c0c0c0;
         }
 
+        .footer-section ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
         .footer-section:first-child {
             border-left: none;
         }
@@ -241,11 +249,12 @@
          */
         function fetchApi() {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/productificator_api/notion/today_tasks', true);
+            xhr.open('GET', '/productificator_api/notion/all', true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var data = JSON.parse(xhr.responseText);
-                    updateTasks(data);
+                    updateTasks(data['today_tasks']);
+                    updateTasksStats(data['tasks_stats']);
                 }
             };
             xhr.send();
@@ -283,6 +292,16 @@
 
             var progressPercentage = (completedMotivationCost / totalMotivationCost) * 100;
             document.getElementById('motivationProgressBar').style.width = progressPercentage + '%';
+        }
+
+        /**
+         * Update the task statistics at the bottom of the page
+         * @param stats Dictionary of statistics
+         */
+        function updateTasksStats(stats) {
+            document.getElementById('nbTaskDone').innerText = stats['nb_done'];
+            document.getElementById('motivationCostCount').innerText = stats['motivation_cost_sum'];
+            document.getElementById('nbTaskPending').innerText = stats['nb_pending'];
         }
 
         /**
@@ -347,6 +366,10 @@
 <footer>
     <div class="footer-section">
         <h2>Tasks</h2>
+        <ul>
+            <li>Done: <span id="nbTaskDone">-</span> (<span id="motivationCostCount">-</span>)</li>
+            <li>Pending: <span id="nbTaskPending">-</span></li>
+        </ul>
     </div>
     <div class="footer-section">
         <h2>Code Stats</h2>
