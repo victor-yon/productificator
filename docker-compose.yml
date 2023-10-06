@@ -3,6 +3,7 @@ version: '3'
 services:
   productificator-api:
     container_name: productificator-api
+    restart: unless-stopped
     build:
       context: .
       dockerfile: Dockerfile
