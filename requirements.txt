@@ -1,6 +1,6 @@
-Flask~=2.3
+Flask~=3.0
 requests~=2.31
-google-auth~=2.22
-google-auth-oauthlib~=1.0
-google-api-python-client~=2.96
-notion-client~=2.0
+google-auth~=2.25
+google-auth-oauthlib~=1.2
+google-api-python-client~=2.111
+notion-client==2.0
