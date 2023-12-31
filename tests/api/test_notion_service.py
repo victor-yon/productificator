@@ -26,5 +26,6 @@ class MyTestCase(unittest.TestCase):
         self.assertGreater(counts['motivation_cost_sum'], 1)
 
     def test_complete_todo(self):
-        success = complete_task('test_id')
+        # TODO: find a way to test this method without hard-coding a task ID
+        success = complete_task('05352f43a9c1417c93c33e5252855468')
         self.assertIs(success, True)

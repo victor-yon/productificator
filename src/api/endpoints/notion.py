@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-from services.notion_service import fetch_today_tasks, fetch_tasks_count
+from services.notion_service import fetch_today_tasks, fetch_tasks_count, complete_task
 
 notion_blueprint = Blueprint('notion', __name__)
 
@@ -26,7 +26,8 @@ def get_tasks_stats():
     return jsonify(fetch_tasks_count())
 
 
-@notion_blueprint.route('/todos/complete/<string:task_id>', methods=['POST'])
-def complete_task(task_id: str):
+@notion_blueprint.route('/complete_task/<string:task_id>', methods=['POST'])
+def post_complete_task(task_id: str):
     # Logic to mark a to-do as complete
-    return jsonify(success=True)
+    success = complete_task(task_id)
+    return jsonify(success=success)

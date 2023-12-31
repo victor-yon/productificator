@@ -98,7 +98,21 @@ def fetch_tasks_count() -> Dict[str, int]:
 
 
 def complete_task(task_id: str) -> bool:
-    # Logic to mark a to-do as complete in Notion
-    # You'll need to use the Notion API here with proper authentication
-    success = True
-    return success
+    """
+    Mark a task as completed in Notion by changing its status to "Done".
+
+    :param task_id: The ID of the task to complete.
+    :return: True if the task was successfully marked as completed, False otherwise.
+    """
+    notion = Client(auth=NOTION_API_TOKEN)
+
+    # Update the task status
+    task = notion.pages.update(
+        page_id=task_id,
+        properties={
+            "Status": {"select": {"name": "Done"}}
+        }
+    )
+
+    task = Task.load_from_notion(task)
+    return task.is_done

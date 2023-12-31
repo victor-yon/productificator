@@ -261,7 +261,7 @@
             for (var i = 0; i < tasks.length; i++) {
                 var t = tasks[i];
                 var taskHTML = '<div class="customCheckbox">' +
-                    '<input type="checkbox" id="' + t.id + '" ' + (t.is_done ? 'checked' : '') + '> ' +
+                    '<input type="checkbox" id="' + t.id + '" ' + (t.is_done ? 'checked disabled' : '') + '> ' +
                     '<label for="' + t.id + '">' + t.label + '</label> ' +
                     '<span class="badge">' + t.motivation_cost + '</span>' +
                     '</div>';
@@ -280,6 +280,39 @@
 
             var progressPercentage = (completedMotivationCost / totalMotivationCost) * 100;
             document.getElementById('motivationProgressBar').style.width = progressPercentage + '%';
+        }
+
+        /**
+         * Handle a click on a task from a static element of the page.
+         * @param event
+         */
+        function handleTaskClick(event) {
+            var target = event.srcElement || event.target;
+
+            // Check if the clicked element is a checkbox
+            if (target && target.tagName === 'INPUT' && target.type === 'checkbox') {
+                markTaskDone(target.id);
+            }
+        }
+
+        /**
+         * Toggle the status of a task to "Done"
+         * @param taskId ID of the task
+         */
+        function markTaskDone(taskId) {
+            var checkbox = document.getElementById(taskId);
+            // Mark the task as done immediately
+            checkbox.checked = true;
+            checkbox.disabled = true;
+            // Send a request to the API to mark the task as done
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/productificator_api/notion/complete_task/' + taskId, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                // Update the page, no matter the result
+                fetchApi();
+            };
+            xhr.send();
         }
 
         /**
@@ -341,7 +374,7 @@
             <div id="motivationProgressBar"></div>
         </div>
 
-        <div id="todos">
+        <div id="todos" onclick="handleTaskClick(event)">
             <!-- To-do tasks will be populated here -->
         </div>
         <div id="done">
@@ -362,7 +395,7 @@
         <h2>Code Stats</h2>
     </div>
     <div class="footer-section">
-        <span id="version">v0.1.0</span>
+        <span id="version">v0.1.1</span>
     </div>
 </footer>
 

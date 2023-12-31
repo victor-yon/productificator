@@ -10,6 +10,8 @@ COPY requirements.txt /app
 
 # Install required Python packages
 RUN pip install --no-cache-dir -r requirements.txt
+# Hot fix for notion-client==2.0 (https://github.com/ramnes/notion-sdk-py/issues/226)
+RUN pip install --no-cache-dir --force-reinstall -v notion-client==2.0
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
